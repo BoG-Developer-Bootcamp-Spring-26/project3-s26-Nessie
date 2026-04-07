@@ -3,36 +3,48 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useUser } from "../components/UserContext";
 
-export default function LoginPage() {
+export default function CreateAccountPage() {
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { setUser } = useUser();
   const router = useRouter();
+  const { setUser } = useUser();
 
-  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+  async function handleCreateAccount(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
+
     try {
-      const res = await fetch("/api/user/verify", {
+      const res = await fetch("/api/user/route", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          fullName,
           email,
           password,
+          admin: isAdmin,
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError("Failed to log in. Please try again.");
+        setError("Failed to create account.");
         return;
       }
 
@@ -44,7 +56,7 @@ export default function LoginPage() {
 
       router.push("/dashboard");
     } catch (err) {
-      setError("Failed to log in. Please try again.");
+      setError("Failed to create account.");
     } finally {
       setLoading(false);
     }
@@ -55,13 +67,23 @@ export default function LoginPage() {
       <section className="flex-1 flex flex-col items-center justify-center relative px-[5%]">
         <div className="w-full max-w-[600px] flex flex-col items-center">
           <h2 className="font-bold text-black mb-12 text-[clamp(36px,6vw,64px)]">
-            Login
+            Create Account
           </h2>
 
           <form
-            onSubmit={handleLogin}
             className="w-full flex flex-col items-center"
+            onSubmit={handleCreateAccount}
           >
+            <div className="w-full mb-10">
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="w-full bg-transparent border-b-2 border-[#D21312] outline-none py-2 text-[clamp(16px,2vw,22px)]"
+                placeholder="Full Name"
+              />
+            </div>
+
             <div className="w-full mb-10">
               <input
                 type="email"
@@ -72,7 +94,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <div className="w-full mb-14">
+            <div className="w-full mb-10">
               <input
                 type="password"
                 value={password}
@@ -82,18 +104,40 @@ export default function LoginPage() {
               />
             </div>
 
+            <div className="w-full mb-8">
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full bg-transparent border-b-2 border-[#D21312] outline-none py-2 text-[clamp(16px,2vw,22px)]"
+                placeholder="Confirm Password"
+              />
+            </div>
+
+            <div className="w-full mb-10 flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={isAdmin}
+                onChange={(e) => setIsAdmin(e.target.checked)}
+                className="h-6 w-6 accent-[#D21312]"
+              />
+              <label className="text-[clamp(16px,2vw,22px)] text-[#2f2f2f]">
+                Admin access
+              </label>
+            </div>
+
             <button
               type="submit"
               className="w-full rounded-2xl bg-[#cf2f24] text-white font-semibold py-4 text-[clamp(18px,2.5vw,28px)] hover:opacity-90 hover:cursor-pointer"
             >
-              Log in
+              Sign up
             </button>
           </form>
 
           <p className="mt-10 text-[#2f2f2f] text-center text-[clamp(14px,2vw,22px)]">
-            Don't have an account?{" "}
-            <Link href="/create-account" className="font-bold text-black">
-              Sign up
+            Already have an account?{" "}
+            <Link href="/login" className="font-bold text-black">
+              Sign in
             </Link>
           </p>
         </div>
