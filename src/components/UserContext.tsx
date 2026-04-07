@@ -1,6 +1,6 @@
 import { createContext, useState, useContext } from "react";
 
-type UserType = {
+export type UserType = {
   id: string;
   fullName: string;
   isAdmin: boolean;

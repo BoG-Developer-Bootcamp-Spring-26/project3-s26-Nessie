@@ -16,9 +16,10 @@ export interface AnimalData {
 
 export interface TrainingData {
     user : ObjectId;
-    animal : ObjectId; 
+    animal : AnimalData; 
     title : String;
     date : Date; 
     description : String;
     hours : number;
 }
+

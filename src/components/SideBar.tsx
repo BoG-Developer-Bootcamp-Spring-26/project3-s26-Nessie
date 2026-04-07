@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import {UserType} from "../components/UserContext"
+import { useRouter } from 'next/navigation'; // Or 'react-router-dom' depending on your setup
 
 type Section = "trainingLogs" | "animals" | "allTraining" | "allAnimals" | "allUsers";
 
@@ -8,9 +10,15 @@ interface ButtonData {
   iconName: string; 
 }
 
-export default function SideBar() {
-  const [activeId, setActiveId] = useState<Section>("trainingLogs");
 
+interface SideBarProps { 
+  user : UserType
+  setUser: React.Dispatch<React.SetStateAction<UserType>>;
+}
+
+export default function SideBar({user, setUser} : SideBarProps) {
+  const [activeId, setActiveId] = useState<Section>("trainingLogs");
+  const router = useRouter();
   const mainButtons: ButtonData[] = [
     { id: "trainingLogs", label: "Training logs", iconName: "TrainingLogo" },
     { id: "animals", label: "Animals", iconName: "AnimalsLogo" },
@@ -29,6 +37,11 @@ export default function SideBar() {
     text-[1.3vw] whitespace-nowrap
     ${activeId === id ? "bg-[#D21312] text-white" : "text-[#565252] hover:bg-gray-200"}
   `;
+
+  const handleLogout = () => {
+    setUser(null);
+    router.push('/login');
+  };  
 
   return (
     <nav className="w-[19.4vw] h-[86.6vh] bg-white flex flex-col border-r border-[#C0BFBF] py-[2vh] overflow-hidden">
@@ -77,12 +90,12 @@ export default function SideBar() {
                <img src="/images/user-avatar.png" alt="" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col">
-              <span className="font-['Heebo'] font-bold text-[1.2vw] text-[#565252] leading-tight">Long Lam</span>
-              <span className="font-['Heebo'] font-normal text-[0.9vw] text-[#565252]">Admin</span>
+              <span className="font-['Heebo'] font-bold text-[1.2vw] text-[#565252] leading-tight">{user?.fullName}</span>
+              <span className="font-['Heebo'] font-normal text-[0.9vw] text-[#565252]">{user?.isAdmin}</span>
             </div>
           </div>
-          <button className="hover:opacity-60 transition-opacity">
-            <img src="/images/logout.png" className="w-[1.4vw] h-[1.4vw]" alt="Logout" />
+          <button onClick = {handleLogout} className="hover:opacity-60 transition-opacity">
+            <img src="/images/logoutLogo.png" className="w-[1.4vw] h-[1.4vw]" alt="Logout" />
           </button>
         </div>
       </div>
