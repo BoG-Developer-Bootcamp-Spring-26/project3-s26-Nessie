@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useUser } from "../components/UserContext";
 
 export default function CreateAccountPage() {
   const [fullName, setFullName] = useState("");
@@ -7,6 +9,58 @@ export default function CreateAccountPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+  const { setUser } = useUser();
+
+  async function handleCreateAccount(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError("");
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/user/route", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName,
+          email,
+          password,
+          admin: isAdmin,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError("Failed to create account.");
+        return;
+      }
+
+      setUser({
+        id: data.userId,
+        fullName: data.fullName,
+        isAdmin: data.isAdmin,
+      });
+
+      router.push("/dashboard");
+    } catch (err) {
+      setError("Failed to create account.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <main className="min-h-screen bg-[#f3f3f3] flex flex-col">
@@ -16,7 +70,10 @@ export default function CreateAccountPage() {
             Create Account
           </h2>
 
-          <form className="w-full flex flex-col items-center">
+          <form
+            className="w-full flex flex-col items-center"
+            onSubmit={handleCreateAccount}
+          >
             <div className="w-full mb-10">
               <input
                 type="text"
@@ -79,7 +136,7 @@ export default function CreateAccountPage() {
 
           <p className="mt-10 text-[#2f2f2f] text-center text-[clamp(14px,2vw,22px)]">
             Already have an account?{" "}
-            <Link href="/" className="font-bold text-black">
+            <Link href="/login" className="font-bold text-black">
               Sign in
             </Link>
           </p>
