@@ -4,7 +4,7 @@ import SideBar from "../components/SideBar";
 import { UserProvider } from "../components/UserContext";
 import {useUser} from "../components/UserContext";
 import { TrainingData, AnimalData } from "@/types/types";
-
+import TrainingCard from "../components/TrainingCard";
 
 export default function TrainingDashboard() {
 
@@ -37,7 +37,40 @@ export default function TrainingDashboard() {
       <SideBar user = {user} setUser = {setUser}/>
 
       
-      <main className="flex-1 h-full bg-white">
+      <main className="flex-1 h-[86.6vh] flex flex-col px-[2.5vw] pt-[4vh] overflow-y-auto bg-white">        
+        <div className="flex justify-between items-center mb-[10px]">
+          <h1 className="font-['Heebo'] font-medium text-[1.8vw] text-[#7C7171]">
+            Training logs
+          </h1>
+
+
+          
+          <button className="flex items-center gap-[0.5vw] hover:opacity-70 transition-opacity pb-[0.5vh]">
+
+            <div className=" border-[#7C7171] flex items-center justify-center relative">
+            </div>
+              <img src = '/images/createNewLogo.png'>
+                </img>
+            <span className="font-['Heebo'] font-medium text-[1.2vw] text-[#7C7171]">
+              Create new
+            </span>
+          </button>
+        </div>        
+
+        <div className="w-full border-t-[1.5px] border-[#615E5E]/40 mb-[40px]" />
+
+        <div className = "flex flex-col gap-[32px] pb-10">
+          {logs.map((log) => (
+            <TrainingCard log = {log} userName = {user?.fullName}/>
+          ))}
+
+        </div>
+
+
+
+
+
+
 
       </main>
       
