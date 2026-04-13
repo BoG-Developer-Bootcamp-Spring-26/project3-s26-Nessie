@@ -1,24 +1,22 @@
 import React from 'react';
-import { TrainingData } from "@/types/types";
+import { TrainingData } from "../types/types"; // Adjust path
 
 interface TrainingCardProps {
     log: TrainingData;
     userName?: string;
 }
 
-
-
-export default function Trainingcard({log, userName} : TrainingCardProps) {
-
-    const subtitle = '${userName} - ${log.animal.breed} - ${log.animal.name}';
-
+export default function TrainingCard({ log, userName } : TrainingCardProps) {
+    // CRITICAL FIX: Using backticks for template literals
+    const subtitle = `${userName || "Unknown"} - ${log.animal?.breed || "Breed"} - ${log.animal?.name || "Name"}`;
 
     return (
         <div className="relative flex w-full h-[162px] bg-white rounded-[20px] shadow-[0px_4px_10px_rgba(0,0,0,0.15)] overflow-hidden">
-        {/* Date Section (Rectangle 20) */}
+        
+        {/* Date Section */}
         <div className="w-[139px] h-full bg-[#070A52]/85 flex items-center justify-center text-center p-4">
             <span className="font-['Oswald'] font-medium text-[32px] leading-tight text-white uppercase">
-            {log.date instanceof Date ? log.date.toLocaleDateString() : log.date}
+            {log.date instanceof Date ? log.date.toLocaleDateString() : new Date(log.date).toLocaleDateString()}
             </span>
         </div>
 
@@ -32,7 +30,7 @@ export default function Trainingcard({log, userName} : TrainingCardProps) {
             <div className="flex items-center gap-1 ml-4">
                 <div className="w-[5px] h-[5px] bg-[#888888] rounded-full" />
                 <span className="font-['Heebo'] font-medium text-[18px] text-[#999999]">
-                {log.hours}
+                {log.hours} hours
                 </span>
             </div>
             </div>
@@ -46,7 +44,7 @@ export default function Trainingcard({log, userName} : TrainingCardProps) {
             </p>
         </div>
 
-        {/* Edit Button (Group 131) */}
+        {/* Edit Button */}
         <div className="flex items-center pr-[40px]">
             <button className="w-[60px] h-[60px] bg-[#D21312] rounded-full flex items-center justify-center hover:opacity-90 transition-opacity">
             <img src="/images/pen-icon.png" alt="Edit" className="w-[24px] h-[24px] invert brightness-200" />
