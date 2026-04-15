@@ -2,6 +2,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useUser } from "../components/UserContext";
+import TitleBar from "@/components/TitleBar";
+import Image from "next/image";
 
 export default function CreateAccountPage() {
   const [fullName, setFullName] = useState("");
@@ -63,7 +65,8 @@ export default function CreateAccountPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f3f3f3] flex flex-col">
+    <main className="min-h-screen bg-white flex flex-col">
+      <TitleBar />
       <section className="flex-1 flex flex-col items-center justify-center relative px-[5%]">
         <div className="w-full max-w-[600px] flex flex-col items-center">
           <h2 className="font-bold text-black mb-12 text-[clamp(36px,6vw,64px)]">
@@ -134,7 +137,7 @@ export default function CreateAccountPage() {
             </button>
           </form>
 
-          <p className="mt-10 text-[#2f2f2f] text-center text-[clamp(14px,2vw,22px)]">
+          <p className="mt-5 text-[#2f2f2f] text-center text-[clamp(14px,2vw,22px)]">
             Already have an account?{" "}
             <Link href="/login" className="font-bold text-black">
               Sign in
@@ -142,7 +145,13 @@ export default function CreateAccountPage() {
           </p>
         </div>
 
-        <div className="absolute bottom-0 left-0 w-[clamp(120px,20vw,260px)] h-[clamp(120px,20vw,260px)] bg-[#e33d31] rounded-tr-full" />
+        <Image
+          src="/images/quarterCircle.png"
+          alt="decorative shape"
+          width={200}
+          height={200}
+          className="absolute bottom-0 left-0 w-[clamp(120px,20vw,260px)] h-auto"
+        />
       </section>
     </main>
   );
