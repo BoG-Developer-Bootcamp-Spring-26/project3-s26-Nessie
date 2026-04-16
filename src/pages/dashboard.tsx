@@ -3,31 +3,43 @@ import SideBar, { Section } from "../components/SideBar";
 import { useUser } from "../components/UserContext";
 import TrainingDashboard from "../components/trainingDashboard";
 import AnimalDashboard from "../components/AnimalDashboard";
+import TitleBar from "../components/TitleBar";
+import UserDashboard from "../components/UserDashboard";
 
-export default function MainDashboardPage() {
+export default function dashboard() {
     const { user, setUser } = useUser(); 
     const [activeId, setActiveId] = useState<Section>("trainingLogs");
 
     return ( 
-        <div className="flex h-screen w-screen bg-gray-50 overflow-hidden">
+        <div className="h-screen w-screen flex flex-col overflow-hidden">
             
-            <SideBar 
-                user={user} 
-                setUser={setUser} 
-                activeId={activeId} 
-                setActiveId={setActiveId} 
-            />
-            
-            <div className="flex-1 h-screen overflow-y-auto bg-white">
-                {activeId === "trainingLogs" && <TrainingDashboard />}
-                
-                {activeId === "animals" && (
-                    <AnimalDashboard/>
-                )}
+            {/* TitleBar - fixed height, never grows */}
+            <div className="shrink-0 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] z-10">
+                <TitleBar />
+            </div>
 
-                {user?.isAdmin && activeId === "allTraining" && (
-                     <div className="p-10 text-2xl text-gray-400">All Training View Placeholder</div>
-                )}
+            {/* Everything below the titlebar */}
+            <div className="flex flex-1 min-h-0 overflow-hidden">
+                
+                {/* Sidebar - stretches to fill remaining height exactly */}
+                <div className="shrink-0 h-full">
+                    <SideBar 
+                        user={user} 
+                        setUser={setUser} 
+                        activeId={activeId} 
+                        setActiveId={setActiveId} 
+                    />
+                </div>
+
+                {/* Dashboard content - only this scrolls */}
+                <div className="flex-1 h-full overflow-y-auto bg-white">
+                    {activeId === "trainingLogs" && <TrainingDashboard activeId={activeId}/>}
+                    {activeId === "animals" && <AnimalDashboard activeId={activeId}/>}
+                    {user?.isAdmin && activeId === "allAnimals" && <AnimalDashboard activeId={activeId} />}
+                    {user?.isAdmin && activeId === "allTraining" && <TrainingDashboard activeId={activeId}/>}
+                    {user?.isAdmin && activeId === "allUsers" && <UserDashboard activeId={activeId}/>}
+                </div>
+
             </div>
         </div>
     );

@@ -48,54 +48,58 @@ export default function SideBar({ user, setUser, activeId, setActiveId }: SideBa
   `;
 
   return (
-    <nav className="w-[19.4vw] h-screen bg-white flex flex-col border-r border-[#C0BFBF] py-[2vh] overflow-hidden">
-      
-      {/* Main Section */}
-      <div className="flex flex-col gap-[0.5vh]">
-        {mainButtons.map((btn) => (
-          <button key={btn.id} onClick={() => setActiveId(btn.id)} className={getButtonStyle(btn.id)}>
-           <img 
-              src={`/images/${activeId === btn.id ? 'active' : 'inactive'}${btn.iconName}.png`} 
-              alt={btn.label}
-              className="w-[1.6vw] h-[1.6vw] object-contain" 
-            />  
-            <span className={activeId === btn.id ? "font-medium" : "font-normal"}>{btn.label}</span>
-          </button>
-        ))}
+    <nav className="w-[19.4vw] h-full bg-white flex flex-col justify-between border-r border-[#C0BFBF] py-[2vh] overflow-hidden">
+
+      {/* TOP: main buttons + admin section */}
+      <div className="flex flex-col min-h-0 overflow-hidden">
+        
+        {/* Main buttons */}
+        <div className="flex flex-col gap-[0.5vh] shrink-0">
+          {mainButtons.map((btn) => (
+            <button key={btn.id} onClick={() => setActiveId(btn.id)} className={getButtonStyle(btn.id)}>
+              <img 
+                src={`/images/${activeId === btn.id ? 'active' : 'inactive'}${btn.iconName}.png`} 
+                alt={btn.label}
+                className="w-[1.6vw] h-[1.6vw] object-contain" 
+              />  
+              <span className={activeId === btn.id ? "font-medium" : "font-normal"}>{btn.label}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="w-[85%] mx-auto border-t-2 border-[#C0BFBF] my-[2vh] shrink-0" />
+
+        {/* Admin section */}
+        {user?.isAdmin && (
+          <div className="flex flex-col shrink-0">
+            <p className="font-['Heebo'] font-medium text-[1.1vw] text-[#565252] mb-[1.5vh] ml-[2.5vw] uppercase">
+              Admin access
+            </p>
+            <div className="flex flex-col gap-[0.5vh]">
+              {adminButtons.map((btn) => (
+                <button key={btn.id} onClick={() => setActiveId(btn.id)} className={getButtonStyle(btn.id)}>
+                  <img 
+                    src={`/images/${activeId === btn.id ? 'active' : 'inactive'}${btn.iconName}.png`} 
+                    alt={btn.label}
+                    className="w-[1.6vw] h-[1.6vw] object-contain" 
+                  />
+                  <span className={activeId === btn.id ? "font-medium" : "font-normal"}>{btn.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className="w-[85%] mx-auto border-t-2 border-[#C0BFBF] my-[2vh]" />
-
-      {/* Admin Section */}
-      {user?.isAdmin && (
-        <div className="flex flex-col flex-grow">
-          <p className="font-['Heebo'] font-medium text-[1.1vw] text-[#565252] mb-[1.5vh] ml-[2.5vw] uppercase">
-            Admin access
-          </p>
-          <div className="flex flex-col gap-[0.5vh]">
-            {adminButtons.map((btn) => (
-              <button key={btn.id} onClick={() => setActiveId(btn.id)} className={getButtonStyle(btn.id)}>
-                <img 
-                  src={`/images/${activeId === btn.id ? 'active' : 'inactive'}${btn.iconName}.png`} 
-                  alt={btn.label}
-                  className="w-[1.6vw] h-[1.6vw] object-contain" 
-                />
-                <span className={activeId === btn.id ? "font-medium" : "font-normal"}>{btn.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Profile Section */}
-      <div className="mt-auto">
+      {/* BOTTOM: profile always pinned */}
+      <div className="shrink-0">
         <div className="w-[85%] mx-auto border-t-2 border-[#C0BFBF] mb-[2vh]" />
         <div className="px-[1.5vw] flex items-center justify-between">
           <div className="flex items-center gap-[0.8vw]">
             <div className="w-[3vw] h-[3vw] bg-[#D21312] rounded-full flex items-center justify-center">
-               <span className="text-white font-['Heebo'] font-bold text-[1.4vw] uppercase">
-                 {initial}
-               </span>
+              <span className="text-white font-['Heebo'] font-bold text-[1.4vw] uppercase">
+                {initial}
+              </span>
             </div>
             <div className="flex flex-col">
               <span className="font-['Heebo'] font-bold text-[1.2vw] text-[#565252] leading-tight">
@@ -111,6 +115,7 @@ export default function SideBar({ user, setUser, activeId, setActiveId }: SideBa
           </button>
         </div>
       </div>
+
     </nav>
   );
 }
