@@ -7,10 +7,11 @@ import { Section } from "../components/SideBar";
 
 interface TrainingDashboardProps {
   activeId: Section;
+  setActiveId : (id: Section) => void;
 }
 
 
-export default function TrainingDashboard({activeId} : TrainingDashboardProps) {
+export default function TrainingDashboard({activeId, setActiveId} : TrainingDashboardProps) {
     const { user } = useUser();
     const [logs, setLogs] = useState<TrainingData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -53,7 +54,8 @@ export default function TrainingDashboard({activeId} : TrainingDashboardProps) {
                     Training logs
                 </h1>
 
-                <button className="flex items-center gap-[0.5vw] hover:opacity-70 transition-opacity pb-[0.5vh]">
+                <button className="flex items-center gap-[0.5vw] hover:opacity-70 transition-opacity pb-[0.5vh]"
+                    onClick={()=> setActiveId("createTraining")}>
                     <img src="/images/createNewLogo.png" alt="Create" className="w-[1.4vw] h-[1.4vw] object-contain" />
                     <span className="font-['Heebo'] font-medium text-[1.2vw] text-[#7C7171]">
                         Create new

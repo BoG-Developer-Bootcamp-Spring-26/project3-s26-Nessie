@@ -5,6 +5,7 @@ import TrainingDashboard from "../components/trainingDashboard";
 import AnimalDashboard from "../components/AnimalDashboard";
 import TitleBar from "../components/TitleBar";
 import UserDashboard from "../components/UserDashboard";
+import CreateTrainingLog from "../components/CreateTrainingLog";
 
 export default function dashboard() {
     const { user, setUser } = useUser(); 
@@ -33,11 +34,12 @@ export default function dashboard() {
 
                 {/* Dashboard content - only this scrolls */}
                 <div className="flex-1 h-full overflow-y-auto bg-white">
-                    {activeId === "trainingLogs" && <TrainingDashboard activeId={activeId}/>}
+                    {activeId === "trainingLogs" && <TrainingDashboard activeId={activeId} setActiveId={setActiveId}/>}
                     {activeId === "animals" && <AnimalDashboard activeId={activeId}/>}
                     {user?.isAdmin && activeId === "allAnimals" && <AnimalDashboard activeId={activeId} />}
-                    {user?.isAdmin && activeId === "allTraining" && <TrainingDashboard activeId={activeId}/>}
+                    {user?.isAdmin && activeId === "allTraining" && <TrainingDashboard activeId={activeId} setActiveId={setActiveId}/>}
                     {user?.isAdmin && activeId === "allUsers" && <UserDashboard activeId={activeId}/>}
+                    {user?.isAdmin && activeId === "createTraining" && <CreateTrainingLog/>}
                 </div>
 
             </div>
