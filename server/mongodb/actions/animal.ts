@@ -1,5 +1,6 @@
 import { AnimalData } from "@/types/types";
 import animal from "../models/Animal";
+import mongoose from "mongoose";
 
 export async function createAnimal(animalData: AnimalData) {
     const newAnimal = new animal(animalData);
@@ -9,6 +10,11 @@ export async function createAnimal(animalData: AnimalData) {
 
 export async function getAnimal(animalId: string) {
     const retrievedAnimal = await animal.findById(animalId);
+    return retrievedAnimal;
+}
+
+export async function getOwnerAnimal(ownerId: string) {
+    const retrievedAnimal = await animal.find({"owner": new mongoose.Types.ObjectId(ownerId)}); 
     return retrievedAnimal;
 }
 

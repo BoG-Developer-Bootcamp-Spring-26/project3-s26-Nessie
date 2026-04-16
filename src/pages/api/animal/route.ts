@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { AnimalData } from "@/types/types";
 import { getUser } from "../../../../server/mongodb/actions/user";
-import { createAnimal, deleteAnimal, updateAnimal, getAnimal} from "../../../../server/mongodb/actions/animal";
+import { createAnimal, deleteAnimal, updateAnimal, getAnimal, getOwnerAnimal} from "../../../../server/mongodb/actions/animal";
 import connectDb from "../../../../server/mongodb/connectDb";
 
 interface AnimalApiData {
     animalData? : AnimalData;
+    animalsData? : AnimalData[];
     message: string;
 }
 
@@ -70,6 +71,33 @@ export default async function handler(
         } catch (e) {
             res.status(500).json({
                 message: "Failed to update animal"
+            });
+        }
+    } else if (req.method === 'GET') {
+        try {
+            const {owner} = req.query;
+
+            if (!owner) {
+                res.status(400).json({
+                    message: "Need owner id to get animals"
+                });
+            }
+            await connectDb();
+            const animals = await getOwnerAnimal(owner as string);
+            if (!animals || animals.length == 0) {
+                res.status(500).json({
+                    message: "failed to retrieve animals"
+                });
+            }
+
+            res.status(200).json({
+                animalsData: animals as unknown as AnimalData[],
+                message: "Succesfully retrieve animals"
+            });
+
+        } catch (e) {
+            res.status(500).json({
+                message: "There was an error in getting the animals"
             });
         }
     }
