@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SideBar, { Section } from "../components/SideBar";
 import { useUser } from "../components/UserContext";
 import TrainingDashboard from "../components/trainingDashboard";
+import AnimalDashboard from "../components/AnimalDashboard";
 
 export default function MainDashboardPage() {
     const { user, setUser } = useUser(); 
@@ -21,7 +22,7 @@ export default function MainDashboardPage() {
                 {activeId === "trainingLogs" && <TrainingDashboard />}
                 
                 {activeId === "animals" && (
-                    <div className="p-10 text-2xl text-gray-400">Animals View Placeholder</div>
+                    <AnimalDashboard/>
                 )}
 
                 {user?.isAdmin && activeId === "allTraining" && (
