@@ -34,12 +34,11 @@ export default function dashboard() {
 
                 {/* Dashboard content - only this scrolls */}
                 <div className="flex-1 h-full overflow-y-auto bg-white">
-                    {activeId === "trainingLogs" && <TrainingDashboard activeId={activeId} setActiveId={setActiveId}/>}
+                    {activeId === "trainingLogs" && <TrainingDashboard activeId={activeId}/>}
                     {activeId === "animals" && <AnimalDashboard activeId={activeId}/>}
                     {user?.isAdmin && activeId === "allAnimals" && <AnimalDashboard activeId={activeId} />}
-                    {user?.isAdmin && activeId === "allTraining" && <TrainingDashboard activeId={activeId} setActiveId={setActiveId}/>}
+                    {user?.isAdmin && activeId === "allTraining" && <TrainingDashboard activeId={activeId}/>}
                     {user?.isAdmin && activeId === "allUsers" && <UserDashboard activeId={activeId}/>}
-                    {user?.isAdmin && activeId === "createTraining" && <CreateTrainingLog/>}
                 </div>
 
             </div>

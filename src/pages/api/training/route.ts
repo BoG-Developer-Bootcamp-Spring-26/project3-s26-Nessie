@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { TrainingData } from "@/types/types";
-import { getAnimal } from "../../../../server/mongodb/actions/animal";
+import { getAnimal } from "../../server/mongodb/actions/animal";
 import {createLog, updateLog} from "../../../../server/mongodb/actions/training";
 import connectDb from "../../../../server/mongodb/connectDb";
 import { isValid, isFuture} from "date-fns";

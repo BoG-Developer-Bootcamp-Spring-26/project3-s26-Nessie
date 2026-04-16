@@ -1,7 +1,7 @@
     import type { NextApiRequest, NextApiResponse } from "next";
     import { AnimalData } from "@/types/types";
     import { getUser } from "../../../../../server/mongodb/actions/user";
-    import { createAnimal, deleteAnimal, updateAnimal, getAnimal, getOwnerAnimal} from "@/server/mongodb/actions/animal";
+    import { createAnimal, deleteAnimal, updateAnimal, getAnimal, getOwnerAnimal} from "../../../../../server/mongodb/actions/animal";
     import connectDb from "../../../../../server/mongodb/connectDb";
     import mongoose from "mongoose";
 
