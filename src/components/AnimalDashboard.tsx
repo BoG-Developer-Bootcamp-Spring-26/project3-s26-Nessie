@@ -2,8 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "../components/UserContext";
 import { AnimalData } from "../types/types";
 import AnimalCard from "../components/AnimalCard"; 
+import { Section } from "../components/SideBar"; 
 
-export default function AnimalDashboard() {
+interface AnimalDashboardProps {
+  activeId: Section;
+}
+
+export default function AnimalDashboard({activeId} : AnimalDashboardProps) {
     const { user } = useUser(); 
     const [animalData, setAnimalData] = useState<AnimalData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -13,17 +18,26 @@ export default function AnimalDashboard() {
         if (!user) return;
         setLoading(true);
         try {
-          const res = await fetch("/api/animal/verify/route", {
-            method : "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({owner: user.id})
-          });
-          const data = await res.json();
+          let data;
+          if (activeId === "allAnimals") {
+            const res = await fetch("/api/admin/animals/route")
+            data = await res.json();
+            setAnimalData(data.animals || []);
+          }else {
+            const res = await fetch("/api/animal/verify/route", {
+              method : "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({owner: user.id})
+            });
+            data = await res.json();
+            setAnimalData(data.animalsData || []);
+          }
+
           // Fixed fallback: must be an empty array, not an array with a string, 
           // otherwise animal.name in the card will throw an error.
-          setAnimalData(data.animalsData || []);
+          
         } catch (e) {
           console.error("Error in fetching requests: ", e);
         } finally {
@@ -31,24 +45,26 @@ export default function AnimalDashboard() {
         }
       }
       fetchAnimals();
-    }, [user]);
+    }, [user, activeId]);
  
     return (
       <div className="flex flex-col px-[5vw] pt-[5vh] w-full min-h-screen bg-gray-50/50">        
         
-        {/* Header Section */}
-        <div className="flex justify-between items-end mb-6 pb-4 border-b border-gray-300">
-          <h1 className="font-['Heebo'] font-medium text-2xl text-gray-600">
-            Animals
+      <div className="flex justify-between items-center mb-[10px]">
+          <h1 className="font-['Heebo'] font-medium text-[1.8vw] text-[#7C7171]">
+              Animals
           </h1>
 
-          <button className="flex items-center gap-2 hover:opacity-70 transition-opacity">
-            <img src="/images/createNewLogo.png" alt="Create" className="w-4 h-4 object-contain" />
-            <span className="font-['Heebo'] font-medium text-sm text-gray-500">
-              Create new
-            </span>
+          <button className="flex items-center gap-[0.5vw] hover:opacity-70 transition-opacity pb-[0.5vh]">
+              <img src="/images/createNewLogo.png" alt="Create" className="w-[1.4vw] h-[1.4vw] object-contain" />
+              <span className="font-['Heebo'] font-medium text-[1.2vw] text-[#7C7171]">
+                  Create new
+              </span>
           </button>
-        </div>        
+      </div>
+      
+      <div className="w-full border-t-[1.5px] border-[#615E5E]/40 mb-[30px]" />
+
 
         {/* Animals Grid */}
         {loading ? (
@@ -59,7 +75,6 @@ export default function AnimalDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 pb-10">
             {animalData.length > 0 ? (
               animalData.map((animal, index) => (
-                // Added a key prop for React rendering performance
                 <AnimalCard animal={animal} />
               ))
             ) : (

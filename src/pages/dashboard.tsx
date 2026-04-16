@@ -3,12 +3,17 @@ import SideBar, { Section } from "../components/SideBar";
 import { useUser } from "../components/UserContext";
 import TrainingDashboard from "../components/trainingDashboard";
 import AnimalDashboard from "../components/AnimalDashboard";
+import TitleBar from "../components/TitleBar";
 
 export default function MainDashboardPage() {
     const { user, setUser } = useUser(); 
     const [activeId, setActiveId] = useState<Section>("trainingLogs");
 
     return ( 
+        <>
+        <div className="shadow-[0px_4px_4px_rgba(0,0,0,0.25)] relative z-10">
+                <TitleBar />
+        </div>
         <div className="flex h-screen w-screen bg-gray-50 overflow-hidden">
             
             <SideBar 
@@ -19,16 +24,25 @@ export default function MainDashboardPage() {
             />
             
             <div className="flex-1 h-screen overflow-y-auto bg-white">
-                {activeId === "trainingLogs" && <TrainingDashboard />}
+                {/* Regular Training Logs */}
+                {activeId === "trainingLogs" && <TrainingDashboard activeId={activeId}/>}
                 
+                {/* Regular User Animals */}
                 {activeId === "animals" && (
-                    <AnimalDashboard/>
+                    <AnimalDashboard activeId={activeId}/>
                 )}
 
+                {/* Admin: All Animals View */}
+                {user?.isAdmin && activeId === "allAnimals" && (
+                    <AnimalDashboard activeId={activeId} />
+                )}
+
+                {/* Admin: All Training View Placeholder */}
                 {user?.isAdmin && activeId === "allTraining" && (
-                     <div className="p-10 text-2xl text-gray-400">All Training View Placeholder</div>
+                    <TrainingDashboard activeId = {activeId}/>
                 )}
             </div>
         </div>
+        </>
     );
 }

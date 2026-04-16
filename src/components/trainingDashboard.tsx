@@ -2,8 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "../components/UserContext";
 import { TrainingData } from "../types/types"; // Adjust path
 import TrainingCard from "../components/TrainingCard";
+import { Section } from "../components/SideBar"; 
 
-export default function TrainingDashboard() {
+
+interface TrainingDashboardProps {
+  activeId: Section;
+}
+
+
+export default function TrainingDashboard({activeId} : TrainingDashboardProps) {
     const { user } = useUser();
     const [logs, setLogs] = useState<TrainingData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -13,15 +20,23 @@ export default function TrainingDashboard() {
             if (!user) return;
             setLoading(true);
             try {
-                const res = await fetch("/api/admin/training/route", {
+                let data; 
+                if (activeId === "allTraining") {
+                    const res = await fetch("/api/admin/training/route");
+                    data = await res.json();
+                    setLogs(data.logs || []);
+                } else {
+                    const res = await fetch("/api/admin/training/route", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({ user: user.id }),
-                });
-                const data = await res.json();
-                setLogs(data.logs || []);
+                    });
+                    const data = await res.json();
+                    setLogs(data.logs || []);
+                }
+
             } catch (e) {
                 console.error("Error in fetching requests: ", e);
             } finally {
