@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getAllAnimals } from "../../../../../server/mongodb/actions/animal"; 
+import { getAllAnimals } from "../../../../server/mongodb/actions/animal"; 
 import connectDb from "../../../../../server/mongodb/connectDb";
 import { AnimalData } from "@/types/types";
 

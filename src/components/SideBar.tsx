@@ -3,7 +3,7 @@ import { UserData } from "../types/types"; // Adjust path
 import { useRouter } from 'next/navigation'; // Or next/router
 import { UserType } from './UserContext';
 
-export type Section = "trainingLogs" | "animals" | "allTraining" | "allAnimals" | "allUsers";
+export type Section = "trainingLogs" | "animals" | "allTraining" | "allAnimals" | "allUsers" | "createTraining" | "createAnimal";
 
 interface ButtonData {
   id: Section;

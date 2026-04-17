@@ -5,6 +5,7 @@ import TrainingDashboard from "../components/trainingDashboard";
 import AnimalDashboard from "../components/AnimalDashboard";
 import TitleBar from "../components/TitleBar";
 import UserDashboard from "../components/UserDashboard";
+import CreateTrainingLog from "../components/CreateTrainingLog";
 
 export default function dashboard() {
     const { user, setUser } = useUser(); 

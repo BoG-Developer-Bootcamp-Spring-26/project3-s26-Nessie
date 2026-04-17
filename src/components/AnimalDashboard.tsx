@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "../components/UserContext";
 import { AnimalData } from "../types/types";
-import AnimalCard from "../components/AnimalCard";
-import { Section } from "../components/SideBar";
-import CreateAnimal from "../components/CreateAnimal";
+import AnimalCard from "../components/AnimalCard"; 
+import { Section } from "../components/SideBar"; 
+import CreateAnimal from "./CreateAnimal";
 
 interface AnimalDashboardProps {
   activeId: Section;
