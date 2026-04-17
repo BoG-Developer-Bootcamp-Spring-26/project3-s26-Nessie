@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { TrainingData } from "@/types/types";
-import { getAnimal } from "../../server/mongodb/actions/animal";
+import { getAnimal } from "../../../../server/mongodb/actions/animal";
 import {createLog, updateLog} from "../../../../server/mongodb/actions/training";
 import connectDb from "../../../../server/mongodb/connectDb";
 import { isValid, isFuture} from "date-fns";
@@ -17,7 +17,7 @@ export default async function handler(
     if (req.method === 'POST') {
         try {
             if (!req.body.user || !req.body.animal || !req.body.title || !req.body.date || !req.body.description || !req.body.hours) {
-                res.status(500).json({
+                res.status(400).json({
                     message: "You must include all information to create a training log"
                 });
             }

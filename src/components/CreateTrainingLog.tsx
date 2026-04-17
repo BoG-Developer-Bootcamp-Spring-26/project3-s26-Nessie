@@ -40,9 +40,9 @@ export default function CreateLogModal({
         body: JSON.stringify({
           title,
           animal: animalName, // Sending the text value
-          hoursTrained: Number(hoursTrained),
+          hours: Number(hoursTrained),
           date: new Date(`${month} ${date}, ${year}`),
-          note,
+          description: note,
           user: userId,
         }),
       });
